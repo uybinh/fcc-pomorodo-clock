@@ -6,6 +6,12 @@ function capitalize(string) {
   return [stringArray[0].toUpperCase()].concat(stringArray.slice(1)).join("")
 }
 
+function formatTime(time) {
+  const second = String(time % 60).padStart(2, "0")
+  const min = String(Math.floor(time / 60)).padStart(2, "0")
+  return `${min}:${second}`
+}
+
 class Controller extends Component {
   render() {
     const controllerStyle = {
@@ -33,7 +39,7 @@ class Controller extends Component {
         </div>
 
         {/* Length display */}
-        <div id={`${name}-length`}>{this.props.length}</div>
+        <div id={`${name}-length`}>{this.props.length / 60}</div>
 
         {/* Decrease */}
         <div
@@ -54,11 +60,7 @@ class Button extends Component {
       cursor: "pointer"
     }
     return (
-      <div
-        style={style}
-        onClick={() => console.log("click button")}
-        id={this.props.id}
-      >
+      <div style={style} onClick={this.props.onClick} id={this.props.id}>
         {this.props.name}
       </div>
     )
@@ -74,7 +76,7 @@ class TimeDisplay extends Component {
     return (
       <div style={style}>
         <div id="timer-label">{this.props.label}</div>
-        <div id="time-left">{timeLeft}</div>
+        <div id="time-left">{formatTime(timeLeft)}</div>
       </div>
     )
   }
@@ -83,34 +85,87 @@ class TimeDisplay extends Component {
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      breakLength: 5,
-      sessionLength: 25,
+    this.defaultState = {
+      breakLength: 5 * 60,
+      sessionLength: 5 * 60,
       isCounting: false,
       isBreak: false,
-      timeLeft: 25 * 60
+      timeLeft: 300,
+      countID: null
+    }
+    this.state = {
+      breakLength: 5 * 60,
+      sessionLength: 25 * 60,
+      isCounting: false,
+      isBreak: false,
+      timeLeft: 25 * 60,
+      countID: null
     }
     this.increase = this.increase.bind(this)
     this.decrease = this.decrease.bind(this)
+    this.startStop = this.startStop.bind(this)
+    this.reset = this.reset.bind(this)
   }
 
   increase(property) {
+    if (this.state.isCounting || this.state[property] > 3600) return
+    const length = this.state[property] + 60
+    const isBreak = property === "breakLength" ? true : false
     this.setState({
-      [property]: this.state[property] + 1
+      [property]: length,
+      timeLeft: length,
+      isBreak
     })
   }
   decrease(property) {
-    if (this.state[property] < 2) return
+    if (this.state.isCounting || this.state[property] < 2) return
+    const length = this.state[property] - 60
     this.setState({
-      [property]: this.state[property] - 1
+      [property]: length,
+      timeLeft: length
     })
   }
 
-  reset() {}
+  reset() {
+    if (this.state.isCounting) {
+      this.startStop()
+    }
+    this.setState(this.defaultState)
+  }
 
-  start() {}
+  count() {
+    return setInterval(() => {
+      if (this.state.timeLeft === 0) {
+        this.startStop()
+        const timeLeft = this.state.isBreak
+          ? this.state.sessionLength
+          : this.state.breakLength
+        this.setState({
+          isBreak: !this.state.isBreak,
+          timeLeft
+        })
+        this.startStop()
+        return
+      }
+      this.setState({
+        timeLeft: this.state.timeLeft - 1,
+        isCounting: true
+      })
+    }, 10)
+  }
 
-  stop() {}
+  startStop() {
+    if (this.state.isCounting) {
+      clearInterval(this.state.countID)
+      this.setState({
+        isCounting: false
+      })
+      return
+    }
+    this.setState({
+      countID: this.count()
+    })
+  }
 
   render() {
     return (
@@ -128,8 +183,8 @@ class App extends Component {
           onDecrease={e => this.decrease("sessionLength")}
         />
         <TimeDisplay label="Time" timeLeft={this.state.timeLeft} />
-        <Button id="start_stop" name="Start/Stop" />
-        <Button id="reset" name="Reset" />
+        <Button id="start_stop" name="Start/Stop" onClick={this.startStop} />
+        <Button id="reset" name="Reset" onClick={this.reset} />
       </div>
     )
   }
