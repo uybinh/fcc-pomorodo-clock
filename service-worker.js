@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/fcc-markdown-previewer/precache-manifest.826b1769147b13752f1119e530e98ce0.js"
+  "/fcc-pomorodo-clock/precache-manifest.b1b6abf3d95cec01527205399a511327.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/fcc-markdown-previewer/index.html", {
+workbox.routing.registerNavigationRoute("/fcc-pomorodo-clock/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
