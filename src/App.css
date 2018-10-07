@@ -1,13 +1,123 @@
+@font-face {font-family: "Digital";
+  src: url("//db.onlinewebfonts.com/t/055d8bd397b68d5d121796f56b904640.eot");
+  src: url("//db.onlinewebfonts.com/t/055d8bd397b68d5d121796f56b904640.eot?#iefix") format("embedded-opentype"),
+  url("//db.onlinewebfonts.com/t/055d8bd397b68d5d121796f56b904640.woff2") format("woff2"),
+  url("//db.onlinewebfonts.com/t/055d8bd397b68d5d121796f56b904640.woff") format("woff"),
+  url("//db.onlinewebfonts.com/t/055d8bd397b68d5d121796f56b904640.ttf") format("truetype"),
+  url("//db.onlinewebfonts.com/t/055d8bd397b68d5d121796f56b904640.svg#Digital") format("svg");
+}
+
+@font-face {font-family: "WanderlustLettersW01-Rg";
+  src: url("//db.onlinewebfonts.com/t/abd9b25231b4c44fcdf5ca33f7397fe3.eot");
+  src: url("//db.onlinewebfonts.com/t/abd9b25231b4c44fcdf5ca33f7397fe3.eot?#iefix") format("embedded-opentype"),
+  url("//db.onlinewebfonts.com/t/abd9b25231b4c44fcdf5ca33f7397fe3.woff2") format("woff2"),
+  url("//db.onlinewebfonts.com/t/abd9b25231b4c44fcdf5ca33f7397fe3.woff") format("woff"),
+  url("//db.onlinewebfonts.com/t/abd9b25231b4c44fcdf5ca33f7397fe3.ttf") format("truetype"),
+  url("//db.onlinewebfonts.com/t/abd9b25231b4c44fcdf5ca33f7397fe3.svg#WanderlustLettersW01-Rg") format("svg");
+}
+
+:root {
+  --bg: #eee;
+}
+
 * {
   box-sizing: border-box;
 }
 
-.container > div {
-  width: 300px;
-  height: 50px;
-  margin: 10px;
-  font-size: 24px;
+.container {
+  margin: auto;
+  max-width: 600px;
   text-align: center;
-  line-height: 50px;
-  border: 1px dashed #222;
+}
+
+body {
+  font-size: 24px;
+  background: var(--bg);
+  color: #444;
+}
+
+h1 {
+  font-family: "WanderlustLettersW01-Rg", sans-serif;
+}
+.controllers-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  text-align: center;
+
+}
+
+[id$=-control] {
+  width: 240px;
+  padding: 20px;
+  margin: 10px 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas: "label label label"
+                       "button1 number button2";
+  background: white;
+  border-radius: 5px;
+  box-shadow: inset 0 0 1px 1px rgba(34, 34, 34, 0.2),
+                    0 .5px .2px 0px white;
+}
+
+[id$=-control] :nth-child(1) {
+  grid-area: label;
+  padding-bottom: 15px;
+  font-weight: 800;
+}
+
+[id$=-control] :nth-child(3) {
+  font-size: 32px;
+}
+
+[id$=-increment],
+[id$=-decrement] {
+  font-size: 32px;
+  cursor: pointer;
+}
+
+
+
+.buttons-wrapper {
+  margin: 10px auto;
+  width: 240px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  width: 100px;
+  padding: 15px;
+  font-size: 28px;
+  text-align: center;
+  background: white;
+  border-radius: 5px;
+  box-shadow: inset 0 0 1px 1px rgba(34, 34, 34, 0.2),
+  0 .5px .2px 0px white;
+}
+
+#timer {
+  width: 240px;
+  padding: 10px;
+  margin: 20px auto;
+  text-align: center;
+  font-size: 30px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: inset 0 0 1px 1px rgba(34, 34, 34, 0.2),
+  0 .5px .2px 0px white;
+}
+
+#timer-label {
+  margin: 10px 0;
+  font-weight: 800;
+}
+
+#time-left {
+  font-family: 'Digital', sans-serif;
+  margin: 20px 0;
+  font-size: 56px;
 }
